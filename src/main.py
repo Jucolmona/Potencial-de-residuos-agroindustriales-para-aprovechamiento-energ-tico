@@ -17,6 +17,28 @@ if __name__ == "__main__":
 
     cultivos_data_frame = cargar_datos('/workspaces/Potencial-de-residuos-agroindustriales-para-aprovechamiento-energ-tico/dataSets/cultivos_def.csv')
 
+    with tabs[0]:
+        
+        cols = st.columns(3, vertical_alignment='bottom')
+
+        st.markdown("## Producción por grupo de cultivo")
+        st.image('/workspaces/Potencial-de-residuos-agroindustriales-para-aprovechamiento-energ-tico/images/grafico_produccion_grupo_cultivo.png')
+        
+        with cols[0]:
+            st.image('/workspaces/Potencial-de-residuos-agroindustriales-para-aprovechamiento-energ-tico/images/grafico_distribucion_otros_permanentes.png',
+                     width=400)
+        with cols[1]:
+            st.image('/workspaces/Potencial-de-residuos-agroindustriales-para-aprovechamiento-energ-tico/images/grafico_distribucion_tropicales_tradicionales.png',
+                     width=450)
+        with cols[2]:
+            st.image('/workspaces/Potencial-de-residuos-agroindustriales-para-aprovechamiento-energ-tico/images/grafico_distribucion_tuberculos_platanos.png',
+                     width=370)
+            
+        st.markdown("## Producción por cultivo")
+        st.image("/workspaces/Potencial-de-residuos-agroindustriales-para-aprovechamiento-energ-tico/images/grafico_produccion_cultivo.png")
+
+        
+
     with tabs[2]:
         filtrado = dsb.datos_regresion(cultivos_data_frame)
         regresion_lineal = ml.entrenar_modelo(filtrado)

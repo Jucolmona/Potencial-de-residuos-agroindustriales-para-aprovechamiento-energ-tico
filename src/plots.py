@@ -2,6 +2,7 @@ from typing import Tuple, List
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import streamlit as st
 
 def graficar_regresion(y_test, y_pred, mse, r2):
     fig, ax = plt.subplots(1, 2, figsize=(12, 5))
@@ -31,27 +32,28 @@ def graficar_kmeans(df: pd.DataFrame,
                     n_clusters: int = 3,
                     plot_3d: bool = False,
                     ):
-    
-    fig = plt.figure(figsize=(10, 6))
-    if plot_3d and len(features) >= 3:
-        ax = fig.add_subplot(111, projection='3d')
-        ax.scatter(df[features[0]], df[features[1]], df[features[2]],
-                   c=df['Cluster'], cmap='viridis', alpha=0.6)
-        ax.scatter(centroids[:, 0], centroids[:, 1], centroids[:, 2],
-                   s=200, c='red', marker='X', label='Centroides')
-        ax.set_xlabel(features[0]); ax.set_ylabel(features[1]); ax.set_zlabel(features[2])
-        ax.set_title(f'K-means 3D ({n_clusters} clusters)')
-    else:
-        ax = fig.add_subplot(111)
-        ax.scatter(df[features[0]], df[features[1]],
-                   c=df['Cluster'], cmap='viridis', alpha=0.6)
-        ax.scatter(centroids[:, 0], centroids[:, 1],
-                   s=200, c='red', marker='X', label='Centroides')
-        ax.set_xlabel(features[0]); ax.set_ylabel(features[1])
-        ax.set_title(f'K-means 2D ({n_clusters} clusters)')
-        ax.legend()
-    return fig
-    
+    try:
+        fig = plt.figure(figsize=(10, 6))
+        if plot_3d and len(features) >= 3:
+            ax = fig.add_subplot(111, projection='3d')
+            ax.scatter(df[features[0]], df[features[1]], df[features[2]],
+                    c=df['Cluster'], cmap='viridis', alpha=0.6)
+            ax.scatter(centroids[:, 0], centroids[:, 1], centroids[:, 2],
+                    s=200, c='red', marker='X', label='Centroides')
+            ax.set_xlabel(features[0]); ax.set_ylabel(features[1]); ax.set_zlabel(features[2])
+            ax.set_title(f'K-means 3D ({n_clusters} clusters)')
+        else:
+            ax = fig.add_subplot(111)
+            ax.scatter(df[features[0]], df[features[1]],
+                    c=df['Cluster'], cmap='viridis', alpha=0.6)
+            ax.scatter(centroids[:, 0], centroids[:, 1],
+                    s=200, c='red', marker='X', label='Centroides')
+            ax.set_xlabel(features[0]); ax.set_ylabel(features[1])
+            ax.set_title(f'K-means 2D ({n_clusters} clusters)')
+            ax.legend()
+        return fig
+    except TypeError:
+        st.write("Cantidad de caracteristicas no son suficiente para generar el gráfico")
 
 
 

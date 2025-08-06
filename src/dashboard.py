@@ -99,4 +99,5 @@ def datos_clustering(df:pd.DataFrame):
 
 def graficar_dashboard(grafica):
     st.pyplot(grafica)
+
    
