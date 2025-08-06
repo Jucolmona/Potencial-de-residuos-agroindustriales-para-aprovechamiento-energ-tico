@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 def encabezado_dashboard():
     col1, col2, col3 = st.columns(3, vertical_alignment='top')
@@ -14,7 +15,7 @@ def encabezado_dashboard():
         
 def tabs_dashboard():
     tabs = st.tabs(['Contexto Nacional', 'Determinación de la capacidad calorífica',
-              'Plantas de generación', 'Análisis y resultados', 'Locaciones para implementación'])
+              'Modelos Machine Learning'])
     return tabs
 
 def tab_markdown(tab, path:str):
@@ -23,4 +24,23 @@ def tab_markdown(tab, path:str):
             markdown_content = file.read()
         st.markdown(markdown_content)
 
+
+def datos_regresion(df:pd.DataFrame):
+    st.title("Regresión por municipio / cultivo")
+    # 1. Filtro Departamento
+    dep = st.selectbox("Departamento", sorted(df['DEPARTAMENTO'].unique()))
+
+    # 2. Municipios disponibles para ese departamento
+    municipios = sorted(df[df['DEPARTAMENTO'] == dep]['MUNICIPIO'].unique())
+    mun = st.selectbox("Municipio", municipios)
+
+    # 3. Cultivos disponibles para ese municipio
+    cultivos = sorted(df[(df['DEPARTAMENTO'] == dep) & (df['MUNICIPIO'] == mun)]['CULTIVO'].unique())
+    cultivo = st.selectbox("Cultivo", cultivos)
+
+    data_frame_filtrado = df[(df['DEPARTAMENTO'] == dep) &
+            (df['MUNICIPIO'] == mun) &
+            (df['CULTIVO'] == cultivo)]
+    
+    st.write(data_frame_filtrado)
     
