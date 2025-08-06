@@ -16,7 +16,7 @@ def encabezado_dashboard():
         
 def tabs_dashboard():
     tabs = st.tabs(['Contexto Nacional', 'Determinación de la capacidad calorífica',
-              'Regresion lineal'])
+              'Regresion lineal', 'Clustering K-means'])
     return tabs
 
 def tab_markdown(tab, path:str):
@@ -51,7 +51,37 @@ def resultados_regresion(resultados:tuple):
     st.metric("MSE", f"{resultados[2]:.2f}")
     st.metric("R²",  f"{resultados[3]:.3f}")
     
+def datos_clustering(df:pd.DataFrame):
+    st.title("Clustering K-means – Producción agrícola")
 
-def graficar_regresion(grafica):
+    # 1. Filtro Departamento
+    departamento = sorted(df['DEPARTAMENTO'].unique())
+    dep = st.selectbox("Departamento:", departamento)
+
+    # 2. Municipios del departamento
+    municipios = sorted(df[df['DEPARTAMENTO'] == dep]['MUNICIPIO'].unique())
+    mun = st.selectbox("Municipio:", municipios)
+
+    # 3. Cultivos disponibles para ese municipio
+    cultivos = sorted(df[(df['DEPARTAMENTO'] == dep) & (df['MUNICIPIO'] == mun)]['CULTIVO'].unique())
+    cultivo = st.selectbox("Cultivo:", cultivos)
+
+    # 4. Número de clusters
+    k = st.slider("Número de clusters (K)", 2, 10, 3)
+
+    # 5. Tipo de gráfica
+    plot_3d = st.checkbox("Gráfica 3D (requiere 3+ variables)")
+
+    # Características a usar
+    features = ['ÁREA SEMBRADA (ha)', 'PRODUCCIÓN (t)', 'RENDIMIENTO (t/ha)']
+
+    # Filtrar
+    sub_df = df[(df['DEPARTAMENTO'] == dep) &
+                (df['MUNICIPIO'] == mun) &
+                (df['CULTIVO'] == cultivo)]
+    
+    return sub_df
+
+def graficar_dashboard(grafica):
     st.pyplot(grafica)
    

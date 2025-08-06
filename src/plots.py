@@ -26,9 +26,10 @@ def graficar_regresion(y_test, y_pred, mse, r2):
     return fig
 
 def graficar_kmeans(df: pd.DataFrame,
+                    centroids,
                     features: List[str] = None,
                     n_clusters: int = 3,
-                    plot_3d: bool = False
+                    plot_3d: bool = False,
                     ):
     
     fig = plt.figure(figsize=(10, 6))

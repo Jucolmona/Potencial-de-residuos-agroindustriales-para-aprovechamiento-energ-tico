@@ -25,5 +25,11 @@ if __name__ == "__main__":
                                                      regresion_lineal[5],
                                                      regresion_lineal[2],
                                                      regresion_lineal[3])
-        dsb.graficar_regresion(grafica_regresion)
+        dsb.graficar_dashboard(grafica_regresion)
         #st.write(cultivos_data_frame)
+
+    with tabs[3]:
+        filtrado = dsb.datos_clustering(cultivos_data_frame)
+        modelo_kmeans = ml.entrenar_kmeans(filtrado)
+        grafica = plots.graficar_kmeans(modelo_kmeans[0],
+                                        modelo_kmeans[3])
