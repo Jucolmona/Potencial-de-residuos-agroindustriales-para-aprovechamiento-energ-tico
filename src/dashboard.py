@@ -25,7 +25,6 @@ def tab_markdown(tab, path:str):
             markdown_content = file.read()
         st.markdown(markdown_content)
 
-
 def datos_regresion(df:pd.DataFrame):
     st.title("Regresión por municipio / cultivo")
     # 1. Filtro Departamento
@@ -95,9 +94,10 @@ def datos_clustering(df:pd.DataFrame):
                 (df['MUNICIPIO'] == mun) &
                 (df['CULTIVO'] == cultivo)]
     
-    return sub_df, features
+    return sub_df, features, plot_3d, k
 
 def graficar_dashboard(grafica):
     st.pyplot(grafica)
+
 
    
