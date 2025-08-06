@@ -55,5 +55,18 @@ def graficar_kmeans(df: pd.DataFrame,
     except TypeError:
         st.write("Cantidad de caracteristicas no son suficiente para generar el gráfico")
 
+def graficar_PE(df:pd.DataFrame, subproducto, departamento, periodo, cultivo):
+    if not df.empty:
+        # Agrupar por municipio para que no haya duplicados en la misma combinación
+        plot_df = df.groupby("MUNICIPIO")[subproducto].sum().reset_index()
 
+        fig, ax = plt.subplots(figsize=(8, 4))
+        ax.bar(plot_df["MUNICIPIO"], plot_df[subproducto], color="skyblue")
+        ax.set_xlabel("Municipio")
+        ax.set_ylabel(subproducto)
+        ax.set_title(f"{subproducto} – {departamento} – {periodo} – {cultivo}")
+        plt.xticks(rotation=45, ha="right")
+        st.pyplot(fig)
+    else:
+        st.warning("No hay datos para la combinación seleccionada.")
 

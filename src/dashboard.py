@@ -15,7 +15,7 @@ def encabezado_dashboard():
         st.image("/workspaces/Potencial-de-residuos-agroindustriales-para-aprovechamiento-energ-tico/images/image-2.png", width=300)
         
 def tabs_dashboard():
-    tabs = st.tabs(['Contexto Nacional', 'Determinación de la capacidad calorífica',
+    tabs = st.tabs(['Contexto Nacional', 'Determinación de la capacidad calorífica', 'Potencial energético calculado',
               'Regresion lineal', 'Clustering K-means'])
     return tabs
 
@@ -99,5 +99,31 @@ def datos_clustering(df:pd.DataFrame):
 def graficar_dashboard(grafica):
     st.pyplot(grafica)
 
+def datos_calculo_PE(df:pd.DataFrame):
+    st.title("Gráfico dinámico de subproductos por filtro")
 
+    # 1. Departamento
+    departamento = st.selectbox("Departamento", sorted(df["DEPARTAMENTO"].unique()))
+
+    # 2. Periodos que existen en ese departamento
+    periodos = sorted(df[df["DEPARTAMENTO"] == departamento]["PERIODO"].unique())
+    periodo  = st.selectbox("Periodo", periodos)
+
+    # 3. Cultivos que existen en (departamento, periodo)
+    cultivos = sorted(df[(df["DEPARTAMENTO"] == departamento) & (df["PERIODO"] == periodo)]["CULTIVO"].unique())
+    cultivo = st.selectbox("Cultivo", cultivos)
+
+    # 4. Subproducto (sin restricción extra; puede ser cualquiera)
+    subproducto = st.selectbox(
+        "Subproducto (eje Y)", ["PRODUCCIÓN (t)", "RENDIMIENTO (t/ha)", "ÁREA SEMBRADA (ha)"]
+    )
+
+    # 5. DataFrame filtrado final
+    sub_df = df[
+        (df["DEPARTAMENTO"] == departamento)
+        & (df["PERIODO"] == periodo)
+        & (df["CULTIVO"] == cultivo)
+    ]
+    return sub_df, subproducto, departamento, periodo, cultivo
+    
    

@@ -18,6 +18,7 @@ if __name__ == "__main__":
     cultivos_data_frame = cargar_datos('/workspaces/Potencial-de-residuos-agroindustriales-para-aprovechamiento-energ-tico/dataSets/cultivos_def.csv')
     plantas_data_frame = cargar_datos('/workspaces/Potencial-de-residuos-agroindustriales-para-aprovechamiento-energ-tico/dataSets/plantas.csv')
     potencial_energetico_data_frame = cargar_datos('/workspaces/Potencial-de-residuos-agroindustriales-para-aprovechamiento-energ-tico/dataSets/potencial energético.csv')
+    potencial_calculado_df = cargar_datos('/workspaces/Potencial-de-residuos-agroindustriales-para-aprovechamiento-energ-tico/dataSets/potencial_energetico_calculado.csv')
 
     with tabs[0]:
         
@@ -53,6 +54,14 @@ if __name__ == "__main__":
             st.write(potencial_energetico_data_frame)
 
     with tabs[2]:
+        st.markdown("## Potencial energético calculado")
+        st.write(potencial_calculado_df)
+
+        datos = dsb.datos_calculo_PE(potencial_calculado_df)
+        st.write(datos)
+        plots.graficar_PE(datos[0], datos[1], datos[2], datos[3], datos[4])
+
+    with tabs[3]:
         columnas_2 = st.columns(2)
         with columnas_2[0]:
             filtrado = dsb.datos_regresion(cultivos_data_frame)
@@ -68,7 +77,7 @@ if __name__ == "__main__":
             dsb.graficar_dashboard(grafica_regresion)
         #st.write(cultivos_data_frame)
 
-    with tabs[3]:
+    with tabs[4]:
         columnas = st.columns(2)
 
         with columnas[0]:
