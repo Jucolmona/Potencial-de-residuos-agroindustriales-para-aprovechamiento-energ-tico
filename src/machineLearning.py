@@ -1,7 +1,6 @@
+from typing import Tuple, List
 import pandas as pd
 import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
@@ -23,7 +22,7 @@ def entrenar_modelo(df: pd.DataFrame,
     if caracteristicas_categoricas is None:
         caracteristicas_categoricas = ['DEPARTAMENTO', 'MUNICIPIO', 'CICLO DE CULTIVO']
     if caracteristicas_numericas is None:
-        caracteristicas_numericas = ['AREA SEMBRADA (ha)']
+        caracteristicas_numericas = ['ÁREA SEMPRADA (ha) ']
     
     X = df[caracteristicas_categoricas + caracteristicas_numericas]
     y = df[target]
@@ -48,5 +47,26 @@ def entrenar_modelo(df: pd.DataFrame,
     mse = mean_squared_error(y_te, y_pred)
     r2  = r2_score(y_te, y_pred)
     
-    return model, encoder, mse, r2
-    
+    return model, encoder, mse, r2, y_te, y_pred
+
+def entrenar_kmeans(df: pd.DataFrame,
+                    features: List[str] = None,
+                    n_clusters: int = 3,
+                    random_state: int = 42
+                    ):
+    if df.empty:
+        raise ValueError("DataFrame vacío")
+
+    features = features or ['ÁREA SEMPRADA (ha) ', 'PRODUCCIÓN (t)', 'RENDIMIENTO (t/ha)']
+    X = df[features]
+
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+
+    kmeans = KMeans(n_clusters=n_clusters, random_state=random_state)
+    df = df.copy()
+    df['Cluster'] = kmeans.fit_predict(X_scaled)
+
+    centroids = scaler.inverse_transform(kmeans.cluster_centers_)
+
+    return df, scaler, kmeans, centroids

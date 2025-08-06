@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 
 def encabezado_dashboard():
     col1, col2, col3 = st.columns(3, vertical_alignment='top')
@@ -15,7 +16,7 @@ def encabezado_dashboard():
         
 def tabs_dashboard():
     tabs = st.tabs(['Contexto Nacional', 'Determinación de la capacidad calorífica',
-              'Modelos Machine Learning'])
+              'Regresion lineal'])
     return tabs
 
 def tab_markdown(tab, path:str):
@@ -42,5 +43,15 @@ def datos_regresion(df:pd.DataFrame):
             (df['MUNICIPIO'] == mun) &
             (df['CULTIVO'] == cultivo)]
     
-    st.write(data_frame_filtrado)
     
+    st.write(data_frame_filtrado)
+    return data_frame_filtrado
+
+def resultados_regresion(resultados:tuple):
+    st.metric("MSE", f"{resultados[2]:.2f}")
+    st.metric("R²",  f"{resultados[3]:.3f}")
+    
+
+def graficar_regresion(grafica):
+    st.pyplot(grafica)
+   
