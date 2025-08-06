@@ -11,7 +11,7 @@ from sklearn.preprocessing import StandardScaler
 def entrenar_modelo(df: pd.DataFrame,
                     caracteristicas_categoricas: list = None,
                     caracteristicas_numericas: list = None,
-                    target: str = 'PRODUCCIÓN (t)',
+                    target: str = 'PRODUCCION (t)',
                     test_size: float = 0.2,
                     random_state: int = 42
                     ):
@@ -22,7 +22,7 @@ def entrenar_modelo(df: pd.DataFrame,
     if caracteristicas_categoricas is None:
         caracteristicas_categoricas = ['DEPARTAMENTO', 'MUNICIPIO', 'CICLO DE CULTIVO']
     if caracteristicas_numericas is None:
-        caracteristicas_numericas = ['ÁREA SEMPRADA (ha) ']
+        caracteristicas_numericas = ['AREA SEMBRADA (ha)']
     
     X = df[caracteristicas_categoricas + caracteristicas_numericas]
     y = df[target]
@@ -57,7 +57,7 @@ def entrenar_kmeans(df: pd.DataFrame,
     if df.empty:
         raise ValueError("DataFrame vacío")
 
-    features = features or ['ÁREA SEMPRADA (ha) ', 'PRODUCCIÓN (t)', 'RENDIMIENTO (t/ha)']
+    features = features or ['AREA SEMBRADA (ha)', 'PRODUCCION (t)', 'RENDIMIENTO (t/ha)']
     X = df[features]
 
     scaler = StandardScaler()

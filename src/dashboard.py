@@ -73,14 +73,29 @@ def datos_clustering(df:pd.DataFrame):
     plot_3d = st.checkbox("Gráfica 3D (requiere 3+ variables)")
 
     # Características a usar
-    features = ['ÁREA SEMBRADA (ha)', 'PRODUCCIÓN (t)', 'RENDIMIENTO (t/ha)']
+    st.write("Definir caracteristicas para el modelo")
+    char1 = st.checkbox('AREA SEMBRADA (ha)')
+    char2 = st.checkbox('PRODUCCION (t)')
+    char3 = st.checkbox('RENDIMIENTO (t/ha)')
+
+    if char1 == True and char2 == True: 
+        features = ['AREA SEMBRADA (ha)', 'PRODUCCION (t)']
+    elif char1 == True and char3 == True:
+        features = ['AREA SEMBRADA (ha)', 'RENDIMIENTO (t/ha)']
+    elif char2 == True and char3 == True:
+        features = ['PRODUCCION (t)', 'RENDIMIENTO (t/ha)']
+    elif char1 == True and char2 == True and char3 == True:
+        features = ['AREA SEMBRADA (ha)', 'PRODUCCION (t)', 'RENDIMIENTO (t/ha)']
+    else:
+        st.write('Tiene que elegir al menos dos caracteristicas para el modelo')
+        features = None
 
     # Filtrar
     sub_df = df[(df['DEPARTAMENTO'] == dep) &
                 (df['MUNICIPIO'] == mun) &
                 (df['CULTIVO'] == cultivo)]
     
-    return sub_df
+    return sub_df, features
 
 def graficar_dashboard(grafica):
     st.pyplot(grafica)
