@@ -29,9 +29,12 @@ if __name__ == "__main__":
         #st.write(cultivos_data_frame)
 
     with tabs[3]:
-        filtrado = dsb.datos_clustering(cultivos_data_frame)[0]
-        modelo_kmeans = ml.entrenar_kmeans(filtrado)
+        filtrado = dsb.datos_clustering(cultivos_data_frame)
+        data_frame_filtrado = filtrado[0]
+        st.write(filtrado[1])
+        modelo_kmeans = ml.entrenar_kmeans(data_frame_filtrado)
         grafica = plots.graficar_kmeans(modelo_kmeans[0],
                                         modelo_kmeans[3],
                                         filtrado[1])
+        dsb.graficar_dashboard(grafica)
         
