@@ -46,6 +46,20 @@ CREATE TABLE cultivo_periodo(
 	FOREIGN KEY (id_municipio) REFERENCES municipios(id_municipio)
 );
 
+-- TABLA CULTIVO MUNICIPIO (TABLA INTERMEDIA)
+CREATE TABLE cultivo_municipio (
+    id_cultivo INT NOT NULL,
+    id_municipio INT NOT NULL,
+    area_sembrada DECIMAL(10,2),
+    area_cosechada DECIMAL(10,2),
+    produccion DECIMAL(10,2),
+    rendimiento DECIMAL(10,2),
+    ciclo_cultivo VARCHAR(50),
+    PRIMARY KEY (id_cultivo, id_municipio),
+    FOREIGN KEY (id_cultivo) REFERENCES cultivo(id_cultivo),
+    FOREIGN KEY (id_municipio) REFERENCES municipios(id_municipio)
+);
+
 -- TABLA TIPO OPERACION PLANTA ELECTRICA
 CREATE TABLE tipo_operacion(
 	id_tipo_operacion INT PRIMARY KEY AUTO_INCREMENT,
@@ -105,5 +119,14 @@ CREATE TABLE parametros_biomasa (
     yrs DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (id_fuente_biomasa) REFERENCES fuente_biomasa(id_fuente_biomasa),
     FOREIGN KEY (id_tipo_residuo) REFERENCES tipo_residuo(id_tipo_residuo)
+);
+
+-- TABLA INTERMEDIA BIOMASA CULTIVO
+CREATE TABLE fuente_biomasa_cultivo (
+    id_fuente_biomasa INT NOT NULL,
+    id_cultivo INT NOT NULL,
+    PRIMARY KEY (id_fuente_biomasa, id_cultivo),
+    FOREIGN KEY (id_fuente_biomasa) REFERENCES fuente_biomasa(id_fuente_biomasa),
+    FOREIGN KEY (id_cultivo) REFERENCES cultivo(id_cultivo)
 );
 
